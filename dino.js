@@ -25,6 +25,10 @@ class Dinosaur {
         this.sprite = new Image(),
         this.sprite = new Image()
     ];
+    readyImage = [
+        this.sprite = new Image()
+    ];
+    
 
     x = 10;
     y = 160;
@@ -41,7 +45,11 @@ class Dinosaur {
                 this.index = 0;
             }
         }
-        if (this.ducking) {
+        
+        if (state.current == state.ready) {
+            this.sprite = this.readyImage[0];
+        }
+        else if (this.ducking) {
             this.sprite = this.duckingImages[this.index];
             this.y = 200;
         }
@@ -51,7 +59,9 @@ class Dinosaur {
     }
 
     update() {
-        this.animation();
+        if (state.current === state.play) {
+           this.animation(); 
+        }
         screenContext.drawImage(this.sprite, this.x, this.y);
         this.vel += 0.5;
         if (this.vel > 8) {
@@ -107,6 +117,8 @@ dino.images[0].src = "assets/dino right.png";
 dino.images[1].src = "assets/dino left.png";
 dino.duckingImages[0].src = "assets/dino down right.png";
 dino.duckingImages[1].src = "assets/dino down left.png";
+//TODO: add the dino default image
+dino.readyImage.src = "assets/dino ready.png";
 
 function Main() {
     screenContext.fillStyle = "#ffffff";
