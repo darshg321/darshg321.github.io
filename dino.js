@@ -3,7 +3,10 @@ const screenContext = screen.getContext("2d");
 screen.width = 854;
 screen.height = 260;
 
-let speed = 1;
+let speed = 4;
+let score = 0;
+let scoreCounter = 0;
+let scoreText = document.getElementById("score");
 
 const state = {
     ready: "ready",
@@ -25,10 +28,6 @@ class Dinosaur {
         this.sprite = new Image(),
         this.sprite = new Image()
     ];
-    readyImage = [
-        this.sprite = new Image()
-    ];
-    
 
     x = 10;
     y = 160;
@@ -36,20 +35,17 @@ class Dinosaur {
     ducking = false;
 
     animation() {
-        this.counter += 1;
+        this.counter++;
 
         if (this.counter > this.stepCooldown) {
             this.counter = 0;
-            this.index += 1;
+            this.index++;
             if (this.index >= this.images.length) {
                 this.index = 0;
             }
         }
-        
-        if (state.current == state.ready) {
-            this.sprite = this.readyImage[0];
-        }
-        else if (this.ducking) {
+
+        if (this.ducking) {
             this.sprite = this.duckingImages[this.index];
             this.y = 200;
         }
@@ -59,9 +55,7 @@ class Dinosaur {
     }
 
     update() {
-        if (state.current === state.play) {
-           this.animation(); 
-        }
+        this.animation();
         screenContext.drawImage(this.sprite, this.x, this.y);
         this.vel += 0.5;
         if (this.vel > 8) {
@@ -89,10 +83,19 @@ class Ground {
         if (state.current === state.play) {
             this.x -= speed;
         }
+        if (this.x <= -1500) {
+            this.x = 0;
+        }
     }
 }
 
 window.addEventListener("keydown", function(event) {
+    if (state.current === state.ready) {
+        if (event.code === "Space" || event.code === "ArrowUp") {
+            ReadyScreen();
+        }
+    }
+
     if ((event.code === "Space" || event.code === "ArrowUp") && !dino.jumping && !dino.ducking) {
         dino.jump();
     }
@@ -108,6 +111,19 @@ window.addEventListener("keyup", function(event) {
     }
 });
 
+function ReadyScreen() {
+    state.current = state.play;
+    document.getElementById("readyImage").style.display = "none";
+}
+
+function scoreAdder() {
+    scoreCounter++
+    if (scoreCounter >= 6) {
+        scoreCounter = 0;
+        score++;
+    }
+
+}
 
 let ground = new Ground();
 ground.sprite.src = "assets/ground.png";
@@ -117,14 +133,16 @@ dino.images[0].src = "assets/dino right.png";
 dino.images[1].src = "assets/dino left.png";
 dino.duckingImages[0].src = "assets/dino down right.png";
 dino.duckingImages[1].src = "assets/dino down left.png";
-//TODO: add the dino default image
-dino.readyImage.src = "assets/dino ready.png";
 
 function Main() {
     screenContext.fillStyle = "#ffffff";
     screenContext.fillRect(0, 0, screen.width, screen.height);
     ground.update();
     dino.update();
+    if (state.current === state.play) {
+        scoreAdder();
+    }
+    scoreText.innerHTML = `Score: ${score}`
 
     requestAnimationFrame(Main);
 }

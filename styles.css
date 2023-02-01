@@ -8,7 +8,21 @@ body {
     justify-content: center;
     align-items: center;
 }
+@font-face {
+    font-family: "Press Start 2P";
+    src: url("assets/PressStart2P-Regular.ttf") format("truetype");
+}
+
+#score {
+    position: absolute;
+    text-align: right;
+    top: 0;
+    font-family: "Press Start 2P", sans-serif;
+}
 canvas {
     border: 5px solid black;
     background: white;
+}
+#readyImage {
+    position: absolute;
 }
