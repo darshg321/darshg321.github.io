@@ -70,25 +70,6 @@ class Dinosaur {
             this.jumping = false;
         }
     }
-    // collisionDetection() {
-    //     let dinoLeft = this.x;
-    //     let dinoRight = this.x + this.sprite.width;
-    //     let dinoTop = this.y;
-    //     let dinoBottom = this.y + this.sprite.height;
-    //
-    //     for (let i = 0; i < cactusArray.length; i++) {
-    //         let cactusLeft = cactusArray[i].x;
-    //         let cactusRight = cactusArray[i].x + cactusArray[i].width;
-    //         let cactusTop = cactusArray[i].y;
-    //         let cactusBottom = cactusArray[i].y + cactusArray[i].height;
-    //
-    //         // Check if there is an overlap between dino and cactus
-    //         if (dinoRight > cactusLeft && dinoLeft < cactusRight &&
-    //             dinoBottom > cactusTop && dinoTop < cactusBottom) {
-    //             console.log("coll")
-    //         }
-    //     }
-    // }
     jump() {
         dino.jumping = true;
         dino.vel -= 21;
@@ -214,6 +195,7 @@ dino.duckingImages[1].src = "assets/dino down left.png";
 let cactusArray = []
 
 function Main() {
+    console.log("E")
     screenContext.fillStyle = "#ffffff";
     screenContext.fillRect(0, 0, screen.width, screen.height);
     ground.update();

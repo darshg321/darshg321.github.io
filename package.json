@@ -1,0 +1,23 @@
+{
+  "name": "dino-game-in-javascript",
+  "version": "1.0.0",
+  "description": "dino game in javascript",
+  "main": "dino.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darshg321/Dino-Game-in-Javascript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/darshg321/Dino-Game-in-Javascript/issues"
+  },
+  "homepage": "https://github.com/darshg321/Dino-Game-in-Javascript#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
