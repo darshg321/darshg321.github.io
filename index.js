@@ -1,9 +1,15 @@
 const express = require('express');
 const fs = require('fs');
+const {MongoClient} = require('mongodb');
 
 const PORT = 8080;
 
 const app = express();
+
+const uri = 'mongodb+srv://darshg321:YSM8F3cjNMsMcMf@dinogame.jyruhpb.mongodb.net/?retryWrites=true&w=majority';
+const client = new MongoClient(uri);
+const db = client.db('HighScores');
+const collection = db.collection('scores');
 
 app.get('/', (request, response) => {
     fs.readFile('./index.html', 'utf8', (err, html) => {
@@ -44,5 +50,40 @@ app.get('/assets/:filename', (request, response) => {
         response.send(image);
     })
 });
+
+app.get('/api/gettopten', async (request, response) => {
+    response.set('Content-Type', 'application/json');
+    try {
+        response.json(await getTopTen());
+    }
+    catch (error) {
+        console.log(error);
+        response.status(500).send({ message: 'Error fetching top ten records' });
+    }
+});
+
+async function getTopTen() {
+    const results = await collection.find().sort({Score: -1}).limit(10).toArray();
+
+    const topTen = results.map((result) => {
+        return {
+            Username: result.Username,
+            Score: result.Score
+        }
+    });
+
+    return JSON.stringify(topTen);
+}
+
+async function main() {
+    try {
+        await client.connect();
+
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+main().catch(console.error);
 
 app.listen(PORT, () => console.log(`Running on http://localhost:${PORT}`));
