@@ -6,7 +6,7 @@ const PORT = 8080;
 
 const app = express();
 
-const uri = 'mongodb+srv://darshg321:YSM8F3cjNMsMcMf@dinogame.jyruhpb.mongodb.net/?retryWrites=true&w=majority';
+const uri = '';
 const client = new MongoClient(uri);
 const db = client.db('HighScores');
 const collection = db.collection('scores');
