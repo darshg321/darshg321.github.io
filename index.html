@@ -7,11 +7,14 @@
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 </head>
 <body onload="Main()">
-<div id="dinodiv">
-    <canvas id="dinogame" width="854" height="260"></canvas>
+<div id="dinoDiv">
+    <canvas id="dinoGame" width="854" height="260"></canvas>
     <img id="readyImage" src="assets/Ready Screen.png" onclick="readyScreenDone()" alt="Ready Screen Image">
     <h1 id="score"></h1>
+    <h2 id="gameOverText" style="display: none"></h2>
+    <img id="restartButton" src="assets/Restart%20Button.png" style="display: none" onclick="restartButtonClick()" alt="Restart Button">
 </div>
+<button onclick="gameOver()"></button>
 
 <script src="dino.js"></script>
 </body>

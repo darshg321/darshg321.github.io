@@ -1,6 +1,18 @@
 body {
     background: #8a868a;
 }
+#restartButton {
+    position: absolute;
+    margin: auto;
+}
+#gameOverText {
+    position: absolute;
+    text-align: center;
+    top: 0;
+    font-family: "Press Start 2P", sans-serif;
+    font-size: 40px;
+    color: #8a868a;
+}
 #Leaderboard {
     background: white;
     border: 3px solid;
@@ -17,9 +29,11 @@ body {
     font-family: "Times New Roman", serif;
 }
 
-#dinodiv {
+#dinoDiv {
+    width: 854px;
+    height: 260px;
     padding: 0;
-    margin: 0;
+    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,8 +46,10 @@ body {
 #score {
     position: absolute;
     text-align: right;
+    left: 550px;
     top: 0;
     font-family: "Press Start 2P", sans-serif;
+    font-size: 30px;
 }
 canvas {
     border: 5px solid black;
