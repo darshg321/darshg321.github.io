@@ -168,12 +168,8 @@ window.addEventListener("keydown", function(event) {
             readyScreenDone();
         }
     }
-
     if ((event.code === "Space" || event.code === "ArrowUp") && !dino.jumping) {
         dino.jump();
-    }
-    else if ((event.code === "ArrowDown") && !dino.jumping) {
-        dino.ducking = true;
     }
     else if (event.code === "ArrowDown" && dino.jumping) {
         if (dino.vel <= 5) {
@@ -221,7 +217,8 @@ function createCactusObject() {
 }
 
 function collides() {
-    if (((dino.y + dino.sprite.height) >= window[cactusArray[0]].top) && ((dino.x + dino.sprite.width) >= window[cactusArray[0]].x)) {
+    if (((dino.y + dino.sprite.height) >= window[cactusArray[0]].top) &&
+        ((dino.x + dino.sprite.width) >= window[cactusArray[0]].x)) {
         return true;
     }
 }
