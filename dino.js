@@ -1,7 +1,5 @@
 const screen = document.getElementById("dinoGame");
 const screenContext = screen.getContext("2d");
-screen.width = 854;
-screen.height = 260;
 const xhr = new XMLHttpRequest();
 
 function setup() {
