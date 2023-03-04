@@ -65,12 +65,17 @@ app.get('/api/gettopten', async (request, response) => {
 
 app.post('/api/sendscore', async function (request, response) {
     try {
-        await sendScore(request.body);
-    } catch (error) {
-        console.log(error);
-        response.status(500).send({message: 'Error sending score'});
+        if (await collection.findOne({Username: request.body.Username})) {
+            await collection.updateOne({Username: request.body.Username}, {"$max": {Score: request.body.Score}});
+        }
+        else {
+            await collection.insertOne(request.body);
+        }
     }
-
+    catch (error) {
+        console.log(error);
+        response.status(500).send({ message: 'Error fetching top ten records' });
+    }
 })
 
 async function getTopTen() {
@@ -84,10 +89,6 @@ async function getTopTen() {
     });
 
     return JSON.stringify(topTen);
-}
-
-async function sendScore(scoreData) {
-    await collection.insertOne(scoreData);
 }
 
 async function main() {

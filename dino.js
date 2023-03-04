@@ -11,27 +11,18 @@ function setup() {
     cactusDelay = 0;
     cactusCounter = 0;
     cactusObjCounter = 0;
-    // birdCounter = 0;
-    // birdDelay = 0;
-    // birdObjCounter = 0;
     cactusArray = [];
-    // birdArray = [];
 
     ground = new Ground();
     ground.sprite.src = "assets/ground.png";
     dino = new Dinosaur();
     dino.images[0].src = "assets/dino right.png";
     dino.images[1].src = "assets/dino left.png";
-    dino.duckingImages[0].src = "assets/dino down right.png";
-    dino.duckingImages[1].src = "assets/dino down left.png";
 
     document.getElementById("gameOverText").style.display = "none";
+    document.getElementById("restartButton").style.display = "none";
 
     state.current = state.play;
-}
-function restartButtonClick() {
-    setup();
-    document.getElementById("restartButton").style.display = "none";
 }
 
 function gameOver() {
@@ -40,26 +31,30 @@ function gameOver() {
     document.getElementById("restartButton").style.display = "block";
     document.getElementById("gameOverText").style.display = "block";
     document.getElementById("gameOverText").innerText = "Game Over";
+
+    sendToLB();
+}
+
+function sendToLB() {
     let username = prompt("Enter a Username to store your score");
     if (username === null || username === "" || username === " " || username === undefined) {
-        console.log("username not sent");
         return;
     }
 
-    if (username.indexOf(' ') >= 0 || username.length < 3) {
+    while (username.indexOf(' ') >= 0 || username.length < 3 || username.length > 10) {
+        if (username === null || username === "" || username === " " || username === undefined) {
+            return;
+        }
         username = prompt("Username must not contain spaces and must be 3-10 characters long");
     }
-    if (username.indexOf(' ') === -1 && username.length >= 3 && username.length <= 10 &&
-        !(username === null || username === "" || username === " " || username === undefined)) {
 
-        let fullData = {
-            Username: username,
-            Score: score
-        };
-        xhr.open('POST', 'http://localhost:8080/api/sendscore', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(fullData));
-    }
+    let fullData = {
+        Username: username,
+        Score: score
+    };
+    xhr.open('POST', 'http://localhost:8080/api/sendscore', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(fullData));
 }
 
 const state = {
@@ -78,15 +73,10 @@ class Dinosaur {
         this.sprite = new Image(),
         this.sprite = new Image()
     ];
-    duckingImages = [
-        this.sprite = new Image(),
-        this.sprite = new Image()
-    ];
 
     x = 10;
     y = 160;
     jumping = false;
-    ducking = false;
 
     animation() {
         this.counter++;
@@ -98,13 +88,7 @@ class Dinosaur {
                 this.index = 0;
             }
         }
-
-        if (this.ducking) {
-            this.sprite = this.duckingImages[this.index];
-            this.y = 200;
-        } else {
-            this.sprite = this.images[this.index];
-        }
+        this.sprite = this.images[this.index];
     }
 
     draw() {
@@ -127,26 +111,6 @@ class Dinosaur {
         dino.jumping = true;
         dino.vel -= 21.5;
     }
-    // checkCollisionWith(spriteArray) {
-    //     const firstSprite = spriteArray[0];
-    //     if (this !== firstSprite) {
-    //         if (
-    //             this.x < firstSprite.x + firstSprite.width &&
-    //             this.x + this.width > firstSprite.x &&
-    //             this.y < firstSprite.y + firstSprite.height &&
-    //             this.y + this.height > firstSprite.y
-    //         ) {
-    //             console.log("coll");
-    //         }
-    //     }
-    // }
-    // get width() {
-    //     return this.sprite.width;
-    // }
-    //
-    // get height() {
-    //     return this.sprite.height;
-    // }
 }
 
 class Ground {
@@ -173,8 +137,7 @@ class Cactus {
     sprite = new Image();
     x = 960;
     y = 15;
-    // width = this.sprite.width;
-    // height = this.sprite.height;
+    top = screen.height - this.sprite.height - this.y
 
     whatCactus() {
         let cactusType = random(1, 2)
@@ -193,53 +156,11 @@ class Cactus {
 
     update() {
         this.x -= speed;
-        if (this.x < -100) {
+        if ((this.x + this.sprite.width) < 0) {
             cactusArray.shift();
         }
     }
 }
-
-// class Bird {
-//     counter = 0;
-//     index = 0;
-//     flapCooldown = 5
-//     images = [
-//         this.sprite = new Image(),
-//         this.sprite = new Image()
-//     ];
-//     x = 960;
-//     y = 50;
-//
-//     animation() {
-//         this.counter++;
-//
-//         if (this.counter > this.flapCooldown) {
-//             this.counter = 0;
-//             this.index++;
-//             if (this.index >= this.images.length) {
-//                 this.index = 0;
-//             }
-//         }
-//         this.sprite = this.images[this.index];
-//     }
-//     whereBird() {
-//         let birdHeight = random(1, 2);
-//         this.y = birdHeight === 1 ? 50 : 200;
-//         this.images[0].src = "assets/bird1.png";
-//         this.images[1].src = "assets/bird2.png";
-//     }
-//
-//     update() {
-//         this.animation();
-//         screenContext.drawImage(this.sprite, this.x, this.y);
-//         if (state.current === state.play) {
-//             this.x -= speed;
-//         }
-//         if (this.x < -100) {
-//             birdArray.shift();
-//         }
-//     }
-// }
 
 window.addEventListener("keydown", function(event) {
     if (state.current === state.ready) {
@@ -248,7 +169,7 @@ window.addEventListener("keydown", function(event) {
         }
     }
 
-    if ((event.code === "Space" || event.code === "ArrowUp") && !dino.jumping && !dino.ducking) {
+    if ((event.code === "Space" || event.code === "ArrowUp") && !dino.jumping) {
         dino.jump();
     }
     else if ((event.code === "ArrowDown") && !dino.jumping) {
@@ -264,12 +185,6 @@ window.addEventListener("keydown", function(event) {
     }
 });
 
-window.addEventListener("keyup", function(event) {
-    if (event.code === "ArrowDown") {
-        dino.ducking = false;
-    }
-});
-
 function readyScreenDone() {
     state.current = state.play;
     document.getElementById("readyImage").style.display = "none";
@@ -280,7 +195,7 @@ function scoreAdder() {
     if (scoreCounter >= 5) {
         scoreCounter = 0;
         score++;
-        if (score % 125 === 0) {speed++;}
+        if (score % 100 === 0) {speed++;}
     }
 }
 
@@ -292,7 +207,7 @@ function cactusDelayer() {
     cactusCounter++;
     if (cactusCounter > cactusDelay) {
         cactusCounter = 0;
-        cactusDelay = random(75, 90);
+        cactusDelay = random(60 - (speed * 1.25), 75 - (speed * 1.25));
         createCactusObject();
     }
 }
@@ -305,22 +220,11 @@ function createCactusObject() {
     window[objectName].whatCactus();
 }
 
-// function birdDelayer() {
-//     birdCounter++;
-//     if (birdCounter > birdDelay) {
-//         birdCounter = 0;
-//         birdDelay = random(45, 90);
-//         createBirdObject();
-//     }
-// }
-
-// function createBirdObject() {
-//     let objectName = 'bird_' + birdObjCounter;
-//     window[objectName] = new Bird();
-//     birdObjCounter++;
-//     birdArray.push(objectName);
-//     window[objectName].whereBird();
-// }
+function collides() {
+    if (((dino.y + dino.sprite.height) >= window[cactusArray[0]].top) && ((dino.x + dino.sprite.width) >= window[cactusArray[0]].x)) {
+        return true;
+    }
+}
 
 let speed = 8;
 let score = 0;
@@ -328,11 +232,7 @@ let scoreCounter = 0;
 let cactusDelay = 0;
 let cactusCounter = 0;
 let cactusObjCounter = 0;
-// let birdCounter = 0;
-// let birdDelay = 0;
-// let birdObjCounter = 0;
 let cactusArray = [];
-// let birdArray = [];
 
 let ground = new Ground();
 ground.sprite.src = "assets/ground.png";
@@ -340,8 +240,6 @@ ground.sprite.src = "assets/ground.png";
 let dino = new Dinosaur();
 dino.images[0].src = "assets/dino right.png";
 dino.images[1].src = "assets/dino left.png";
-dino.duckingImages[0].src = "assets/dino down right.png";
-dino.duckingImages[1].src = "assets/dino down left.png";
 
 const scoreText = document.getElementById("score");
 
@@ -403,9 +301,9 @@ function Main() {
         scoreAdder();
         cactusDelayer();
         cactusArray.forEach(cactus => window[cactus].update());
-        // dino.checkCollisionWith(cactusArray);
-        // birdDelayer();
-        // birdArray.forEach(bird => window[bird].update());
+        if (collides()) {
+            gameOver();
+        }
     }
     scoreText.innerText = `${score}`;
 
