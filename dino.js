@@ -1,6 +1,5 @@
 const screen = document.getElementById("dinoGame");
 const screenContext = screen.getContext("2d");
-const xhr = new XMLHttpRequest();
 
 function setup() {
     speed = 8;
@@ -29,30 +28,6 @@ function gameOver() {
     document.getElementById("restartButton").style.display = "block";
     document.getElementById("gameOverText").style.display = "block";
     document.getElementById("gameOverText").innerText = "Game Over";
-
-    sendToLB();
-}
-
-function sendToLB() {
-    let username = prompt("Enter a Username to store your score");
-    if (username === null || username === "" || username === " " || username === undefined) {
-        return;
-    }
-
-    while (username.indexOf(' ') >= 0 || username.length < 3 || username.length > 10) {
-        if (username === null || username === "" || username === " " || username === undefined) {
-            return;
-        }
-        username = prompt("Username must not contain spaces and must be 3-10 characters long");
-    }
-
-    let fullData = {
-        Username: username,
-        Score: score
-    };
-    xhr.open('POST', 'http://localhost:8080/api/sendscore', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(fullData));
 }
 
 const state = {
@@ -237,52 +212,6 @@ dino.images[0].src = "assets/dino right.png";
 dino.images[1].src = "assets/dino left.png";
 
 const scoreText = document.getElementById("score");
-
-fetch('http://localhost:8080/api/gettopten')
-    .then((response) => response.json())
-    .then((data) => createLeaderboard(data))
-
-async function createLeaderboard(jsonString) {
-    const data = JSON.parse(jsonString);
-
-    const table = document.createElement('table');
-    table.id = "Leaderboard";
-
-    const headerRow = document.createElement('tr');
-    headerRow.id = "HeaderRow";
-
-    const rankHeader = document.createElement('th');
-    rankHeader.textContent = 'Rank';
-    const usernameHeader = document.createElement('th');
-    usernameHeader.textContent = 'Username';
-    const scoreHeader = document.createElement('th');
-    scoreHeader.textContent = 'Score';
-    headerRow.appendChild(rankHeader);
-    headerRow.appendChild(usernameHeader);
-    headerRow.appendChild(scoreHeader);
-    table.appendChild(headerRow);
-
-    for (let i = 0; i < data.length; i++) {
-        const row = document.createElement('tr');
-
-        const rankCell = document.createElement('td');
-        rankCell.textContent = (i + 1).toString();
-        row.appendChild(rankCell);
-
-        const usernameCell = document.createElement('td');
-        usernameCell.textContent = data[i].Username;
-        row.appendChild(usernameCell);
-
-        const scoreCell = document.createElement('td');
-        scoreCell.textContent = data[i].Score;
-        row.appendChild(scoreCell);
-
-        table.appendChild(row);
-    }
-
-    document.body.appendChild(table);
-}
-
 
 function Main() {
     screenContext.fillStyle = "#ffffff";

@@ -13,22 +13,6 @@ body {
     font-size: 40px;
     color: #8a868a;
 }
-#Leaderboard {
-    background: white;
-    border: 3px solid;
-    width: 864px;
-    font-size: 25px;
-    padding: 15px;
-    text-align: left;
-    margin-left: auto;
-    margin-right: auto;
-}
-#HeaderRow {
-    background: aqua;
-    font-size: 40px;
-    font-family: "Times New Roman", serif;
-}
-
 #dinoDiv {
     width: 854px;
     height: 260px;
