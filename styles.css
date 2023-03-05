@@ -42,11 +42,3 @@ canvas {
 #readyImage {
     position: absolute;
 }
-@media screen and (orientation:landscape) {
-    #dinoDiv {
-        transform: rotate(90deg);
-    }
-    canvas {
-        transform: rotate(90deg);
-    }
-}

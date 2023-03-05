@@ -137,6 +137,7 @@ class Cactus {
 }
 
 if (isMobile) {
+    speed -= 4;
     window.addEventListener('touchstart', () => {
         if (state.current === state.play && !dino.jumping) {
             dino.jump();
