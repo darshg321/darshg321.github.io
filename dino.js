@@ -136,13 +136,13 @@ class Cactus {
 }
 
 window.addEventListener("keydown", function(event) {
-    if (state.current === state.ready) {
-        if (event.code === "Space" || event.code === "ArrowUp") {
+    if (event.code === "Space" || event.code === "ArrowUp") {
+        if (state.current === state.ready) {
             readyScreenDone();
         }
-    }
-    if ((event.code === "Space" || event.code === "ArrowUp") && !dino.jumping) {
-        dino.jump();
+        else if (state.current === state.play && !dino.jumping) {
+            dino.jump();
+        }
     }
     else if (event.code === "ArrowDown" && dino.jumping) {
         if (dino.vel <= 5) {
