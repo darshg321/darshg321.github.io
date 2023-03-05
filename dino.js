@@ -1,5 +1,6 @@
 const screen = document.getElementById("dinoGame");
 const screenContext = screen.getContext("2d");
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 function setup() {
     speed = 8;
@@ -135,24 +136,34 @@ class Cactus {
     }
 }
 
-window.addEventListener("keydown", function(event) {
-    if (event.code === "Space" || event.code === "ArrowUp") {
-        if (state.current === state.ready) {
-            readyScreenDone();
-        }
-        else if (state.current === state.play && !dino.jumping) {
+if (isMobile) {
+    window.addEventListener('touchstart', () => {
+        if (state.current === state.play && !dino.jumping) {
             dino.jump();
         }
-    }
-    else if (event.code === "ArrowDown" && dino.jumping) {
-        if (dino.vel <= 5) {
-            dino.vel = 6;
+    });
+}
+else {
+    window.addEventListener("keydown", (event) => {
+        if (event.code === "Space" || event.code === "ArrowUp") {
+            if (state.current === state.play && !dino.jumping) {
+                dino.jump();
+            }
+            else if (state.current === state.ready) {
+                readyScreenDone();
+            }
+
         }
-        else if (dino.vel <= 8) {
-            dino.vel += 2
+        else if (event.code === "ArrowDown" && dino.jumping) {
+            if (dino.vel <= 5) {
+                dino.vel = 6;
+            }
+            else if (dino.vel <= 8) {
+                dino.vel += 2
+            }
         }
-    }
-});
+    });
+}
 
 function readyScreenDone() {
     state.current = state.play;
