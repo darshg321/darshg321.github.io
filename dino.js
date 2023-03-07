@@ -3,7 +3,7 @@ const screenContext = screen.getContext("2d");
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 function setup() {
-    speed = 8;
+    speed = 4;
     score = 0;
     scoreCounter = 0;
     cactusDelay = 0;
@@ -207,7 +207,7 @@ function collides() {
     }
 }
 
-let speed = isMobile ? 1 : 8;
+let speed = isMobile ? 4 : 8;
 let score = 0;
 let scoreCounter = 0;
 let cactusDelay = 0;
