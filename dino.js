@@ -137,7 +137,6 @@ class Cactus {
 }
 
 if (isMobile) {
-    speed -= 4;
     window.addEventListener('touchstart', () => {
         if (state.current === state.play && !dino.jumping) {
             dino.jump();
@@ -208,7 +207,7 @@ function collides() {
     }
 }
 
-let speed = 8;
+let speed = isMobile ? 4 : 8;
 let score = 0;
 let scoreCounter = 0;
 let cactusDelay = 0;
