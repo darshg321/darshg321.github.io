@@ -207,7 +207,7 @@ function collides() {
     }
 }
 
-let speed = isMobile ? 4 : 8;
+let speed = isMobile ? 1 : 8;
 let score = 0;
 let scoreCounter = 0;
 let cactusDelay = 0;
