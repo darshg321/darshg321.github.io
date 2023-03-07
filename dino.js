@@ -187,7 +187,7 @@ function cactusDelayer() {
     cactusCounter++;
     if (cactusCounter > cactusDelay) {
         cactusCounter = 0;
-        cactusDelay = random(60 - (speed * 1.25), 75 - (speed * 1.25));
+        cactusDelay = random(100 - (speed * 1.25), 120 - (speed * 1.25));
         createCactusObject();
     }
 }
