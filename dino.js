@@ -3,7 +3,7 @@ const screenContext = screen.getContext("2d");
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 function setup() {
-    speed = 4;
+    speed = ismobile ? 4 : 8;
     score = 0;
     scoreCounter = 0;
     cactusDelay = 0;
